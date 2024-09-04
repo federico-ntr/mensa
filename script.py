@@ -77,13 +77,11 @@ def render_piatto(piatto):
 def render_piatti(piatti):
   return "\n".join(map(render_piatto, piatti))
 
-def render_message(dt=None):
+def render_message(menu, dt=None):
   if not dt:
     dt = datetime.now()
   day = dt.weekday()
   data = dt.strftime('%d/%m/%Y')
-
-  menu = get_menu()
 
   msg = f'''\
 {emojis['white_right_pointing_backhand_index']} Menù <b>{days_text[day]}</b> {data}
@@ -122,4 +120,8 @@ if __name__ == "__main__":
     else:
        params = dict(map(lambda x,y : (x,y) , vars,sys.argv[1:]))
 
-    publish_message_to_telegram(params['BOT_TOKEN'], params['CHANNEL_ID'], render_message())
+    menu = get_menu()
+
+    msg = render_message(menu)
+
+    publish_message_to_telegram(params['BOT_TOKEN'], params['CHANNEL_ID'], msg)
